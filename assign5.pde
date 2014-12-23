@@ -190,8 +190,8 @@ void reset(){
   ballStat = 0;
   count = 0;
   
-  brickMaker(40, 10);
   drawBrick();
+  brickMaker(40, 10);
 }
 
 // Mouse & Key
@@ -220,15 +220,17 @@ boolean isCollidingCircleRectangle(
 {
     float circleDistanceX = abs(circleX - rectangleX - rectangleWidth/2);
     float circleDistanceY = abs(circleY - rectangleY - rectangleHeight/2);
+    float cornerDistance_sq = pow(circleDistanceX - rectangleWidth/2, 2) +
+                              pow(circleDistanceY - rectangleHeight/2, 2);
  
     if (circleDistanceX > (rectangleWidth/2 + radius)) { return false; }
     if (circleDistanceY > (rectangleHeight/2 + radius)) { return false; }
  
     if (circleDistanceX <= (rectangleWidth/2)) { ball.bySpeed *= -1; return true; }
-    if (circleDistanceY <= (rectangleHeight/2)) { ball.bxSpeed *= -1; return true; }
+    else if (circleDistanceY <= (rectangleHeight/2) ) { ball.bxSpeed *= -1; return true; }
+    else if ( cornerDistance_sq <= pow(radius,2) ) { ball.bxSpeed *= -1; }
  
-    float cornerDistance_sq = pow(circleDistanceX - rectangleWidth/2, 2) +
-                         pow(circleDistanceY - rectangleHeight/2, 2);
- 
+    
+    
     return (cornerDistance_sq <= pow(radius,2));
 }
