@@ -95,15 +95,16 @@ void killBrick(Brick obj){
 void checkBrick(){
   for(int i = 0; i<bList.length; i++){
     Brick brick = bList[i];
-    if(brick != null && !brick.die &&
-       ball.bx + ball.bSize/2 > brick.kx && 
-       ball.bx - ball.bSize/2 < brick.kx + brick.kWidth &&
-       ball.by - ball.bSize/2 == brick.ky + brick.kHeight){
+    
+    boolean collisionDetected = isCollidingCircleRectangle(ball.bx, ball.by,
+      ball.bSize/2, brick.kx, brick.ky, brick.kWidth, brick.kHeight);
+    
+    if(collisionDetected == true){
          killBrick(brick);
-         ball.bySpeed *= -1;
-         count += 1;
-       }      
-  }
+         count += 1;  
+    }
+  }     
+  
   
   if(count == 40){
     status = 2;
@@ -152,7 +153,7 @@ void ballStatus(){
   switch(ballStat){
     case 0:
     ball.bx = mouseX;
-    ball.by = height - 38;
+    ball.by = height - 37;
     break;
     
     case 1:
@@ -185,7 +186,7 @@ void statusCtrl() {
 // Reset Game
 
 void reset(){
-  life = 1;
+  life = 3;
   ballStat = 0;
   count = 0;
   
@@ -206,4 +207,28 @@ void mouseClicked(){
 
 void keyPressed(){
   statusCtrl();
+}
+
+boolean isCollidingCircleRectangle(
+      float circleX,
+      float circleY,
+      float radius,
+      float rectangleX,
+      float rectangleY,
+      float rectangleWidth,
+      float rectangleHeight)
+{
+    float circleDistanceX = abs(circleX - rectangleX - rectangleWidth/2);
+    float circleDistanceY = abs(circleY - rectangleY - rectangleHeight/2);
+ 
+    if (circleDistanceX > (rectangleWidth/2 + radius)) { return false; }
+    if (circleDistanceY > (rectangleHeight/2 + radius)) { return false; }
+ 
+    if (circleDistanceX <= (rectangleWidth/2)) { ball.bySpeed *= -1; return true; }
+    if (circleDistanceY <= (rectangleHeight/2)) { ball.bxSpeed *= -1; return true; }
+ 
+    float cornerDistance_sq = pow(circleDistanceX - rectangleWidth/2, 2) +
+                         pow(circleDistanceY - rectangleHeight/2, 2);
+ 
+    return (cornerDistance_sq <= pow(radius,2));
 }
