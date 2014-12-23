@@ -79,12 +79,13 @@ void drawBrick(){
 void brickMaker(int bNum, int bCol){
   for(int i = 0; i < bNum; i++){
     for(int j = 0; j < bCol; j++){
-      int x = 50 + i % bCol * 55;
-      int y = 50 + i / bCol * 55;        
+      float x = 50 + i % bCol * 55;
+      float y = 50 + i / bCol * 55;        
       bList[i] = new Brick(x, y);
     }
   }
 }
+
 
 void killBrick(Brick obj){
   obj.die = true;
