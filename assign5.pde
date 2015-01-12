@@ -79,8 +79,8 @@ void drawBrick(){
 void brickMaker(int bNum, int bCol){
   for(int i = 0; i < bNum; i++){
     for(int j = 0; j < bCol; j++){
-      int x = int(50 + i % bCol * 55);
-      int y = int(50 + i / bCol * 55);        
+      float x = float(50 + i % bCol * 55);
+      float y = float(50 + i / bCol * 55);        
       bList[i] = new Brick(x, y);
     }
   }
